@@ -1,64 +1,29 @@
-# temprun Memory
+# Chronelle Memory
 
-`.memory` is the persistent project memory for humans and coding agents. It follows a lightweight Chronelle-style ontology: store durable context as typed knowledge rather than accumulating conversation transcripts.
+`.memory/` contains temprun's historical durable source memory.
 
-## Ontology
+The source primitive model is intentionally only:
 
-### `CONTEXT.md`
-Stable project identity, goals, architecture, constraints, and current milestone. Update when the project's direction or milestone materially changes.
+- Claim: truth-apt memory
+- Commitment: will-apt memory
 
-### `DECISIONS.md`
-Append-only architectural decision log. Record decisions that future work should not have to rediscover.
+The current working memory interface is:
 
-Format:
-
-```markdown
-## YYYY-MM-DD — Decision title
-
-**Context:** Why the decision was needed.
-
-**Decision:** What was chosen.
-
-**Rationale:** Why.
-
-**Consequences:** What this enables or constrains.
+```text
+MEMORY.md
+journal/
 ```
 
-### `LEARNINGS.md`
-Durable technical knowledge learned through implementation. Focus especially on Temporal and distributed-systems semantics: replay, delivery guarantees, retries, idempotency, scheduling, failure modes, and worker behavior.
+`MEMORY.md` tracks current status for fast agent resume. `journal/` stores the detailed dated paper trail.
 
-Do not simply copy documentation. Record what became clear through this project and why it matters.
+Compact `.chron` records live under:
 
-### `QUESTIONS.md`
-Investigation backlog. Questions are never deleted; change `OPEN` to `ANSWERED` and record the answer or link to the relevant learning/decision.
-
-### `EXPERIMENTS.md`
-Empirical notebook for distributed-systems behavior. Prefer experiments over assumptions.
-
-Each experiment should capture:
-
-```markdown
-## Experiment: title
-Status: PLANNED | RUNNING | COMPLETE
-
-Hypothesis:
-Setup:
-Expected:
-Observed:
-Conclusion:
+```text
+.memory/records/
 ```
 
-### `HANDOFF.md`
-Short-lived continuation state for the next coding session or agent. Keep it concise and current: what exists, what was just done, next action, and blockers.
+Each record is a Git-committed memory payload containing Claims and Commitments. Git is the ledger for this local-file implementation.
 
-## Memory rules
+Human-facing artifacts, task plans, checkpoints, `MEMORY.md`, and `journal/` live outside `.memory/`.
 
-1. Memory is not a transcript.
-2. Prefer concise facts with enough context to remain understandable months later.
-3. Record *why* for decisions, not just what changed.
-4. Separate observation from inference in experiments.
-5. Preserve answered questions and superseded decisions as history.
-6. Update `HANDOFF.md` before ending substantial work.
-7. If a new insight changes an architectural assumption, update both the relevant learning and decision/context entry.
-
-The purpose is continuation: a new agent should be able to inspect `AGENTS.md` and `.memory` and continue the project without reconstructing its intent from chat history.
+For temprun, use `.memory/records/YYYY/MM/DD/*.chron` only for durable compact records. Keep working status in `MEMORY.md` and narrative/experimental detail in `journal/YYYY-MM-DD.md`.
