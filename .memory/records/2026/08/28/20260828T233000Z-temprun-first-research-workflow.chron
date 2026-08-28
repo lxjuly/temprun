@@ -1,0 +1,17 @@
+chron 0
+@ 2026-08-28T23:30:00Z codex temprun first-research-workflow
+= Implement the first Temporal deep research workflow learning increment.
+
++ C claim settled retry-policy-works-with-fake-agent-failure : A controlled one-time fake agent Activity failure is retried by Temporal according to RetryPolicy without a manual workflow retry loop.
++ C claim settled workflow-first-increment-is-explicit : The first implementation keeps Workflow, Activity, RetryPolicy, timeout, and parallel fan-out/fan-in concepts visible in code.
+
++ K commitment done bootstrap-temporal-project : Created the minimal Python Temporal package, worker entrypoint, run entrypoint, and tests.
++ K commitment done implement-parallel-agent-fanout : ResearchWorkflow runs web, systems, and critic fake agent Activities in parallel before synthesis.
++ K commitment done add-controlled-retry-experiment : Tests verify the systems fake agent can fail once and then succeed on Temporal retry.
++ K commitment active add-signal-approval : Add durable human approval via Signal and Query after synthesis.
+
+> temprun/workflows.py
+> temprun/activities.py
+> tests/test_research_workflow.py
+> MEMORY.md
+> journal/2026-08-28.md

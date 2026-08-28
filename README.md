@@ -8,6 +8,18 @@ The project exists primarily as a hands-on learning environment for Temporal and
 
 Build a research workflow that fans out to several agent activities, synthesizes their results, waits for approval, and can survive worker crashes without losing progress.
 
+Current implementation:
+
+```text
+ResearchWorkflow
+  -> plan_research Activity
+  -> three parallel run_fake_agent Activities
+  -> synthesize_research Activity
+  -> ResearchBrief
+```
+
+The fake agent Activities are intentionally simple. They make Temporal's retry, timeout, deterministic replay, and Activity boundary behavior visible before any real LLM or network integration is added.
+
 ## Learning path
 
 1. Run one Workflow and one Activity.
@@ -43,4 +55,12 @@ And in another:
 python -m temprun.run
 ```
 
-See `AGENTS.md` and `.memory/AGENT_CONTEXT.md` for the learning constraints and project memory.
+Run tests:
+
+```bash
+pytest
+```
+
+The tests use Temporal's Python testing environment. On first run, the Temporal SDK may download a local test server binary.
+
+See `AGENTS.md`, `MEMORY.md`, and `.memory/README.md` for the learning constraints and project memory.
