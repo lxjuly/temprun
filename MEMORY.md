@@ -16,12 +16,14 @@ Extend the first Temporal research workflow with durable human approval via Sign
 - [settled] failure-experiments-are-core: Retry, replay, worker crash, cancellation, idempotency, and durable waiting should be learned through explicit experiments.
 - [settled] workflow-activity-boundary-is-central: Workflow code coordinates durable state and must remain replay-safe; external or nondeterministic work belongs in Activities.
 - [settled] retry-policy-works-with-fake-agent-failure: A controlled one-time fake agent Activity failure is retried by Temporal according to RetryPolicy without a manual workflow retry loop.
+- [settled] demo-ui-should-teach-workflow-shape: The first demo UI should visualize the Temporal research workflow and retry path without adding backend framework dependencies.
 
 ## Commitments
 
 - [done] bootstrap-temporal-project: Created the minimal Python Temporal project and first ResearchWorkflow.
 - [done] implement-parallel-agent-fanout: Runs three fake agent Activities in parallel and synthesizes their results.
 - [done] add-controlled-retry-experiment: Added controlled Activity failure plus Temporal RetryPolicy and verified retry behavior with tests.
+- [done] add-static-demo-ui: Added a dependency-free static demo that simulates request, planning, parallel agents, retry, synthesis, and final brief states.
 - [active] add-signal-approval: Add durable human approval via Signal and Query after synthesis.
 - [proposed] run-worker-crash-experiments: Kill and restart workers at adversarial points and document observed behavior.
 

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>temprun demo</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">temprun</p>
+          <h1>Deep Research Workflow</h1>
+        </div>
+        <div class="status-pill" id="runStatus">idle</div>
+      </header>
+
+      <section class="workspace" aria-label="Workflow demo">
+        <form class="control-panel" id="runForm">
+          <label class="field">
+            <span>Topic</span>
+            <input
+              id="topic"
+              name="topic"
+              value="Temporal workflow determinism"
+              autocomplete="off"
+            >
+          </label>
+
+          <label class="field">
+            <span>Depth</span>
+            <select id="depth" name="depth">
+              <option value="interview-prep">interview-prep</option>
+              <option value="systems-design">systems-design</option>
+              <option value="failure-semantics">failure-semantics</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Fail Once</span>
+            <select id="failAgent" name="failAgent">
+              <option value="systems">systems</option>
+              <option value="">none</option>
+              <option value="web">web</option>
+              <option value="critic">critic</option>
+            </select>
+          </label>
+
+          <button class="primary" type="submit">
+            <span class="button-icon" aria-hidden="true">&gt;</span>
+            Run
+          </button>
+        </form>
+
+        <section class="flow" aria-label="Research workflow states">
+          <div class="node" data-step="request">
+            <span class="node-kicker">input</span>
+            <strong>Request</strong>
+            <p id="requestText">Temporal workflow determinism</p>
+          </div>
+
+          <div class="connector" aria-hidden="true"></div>
+
+          <div class="node" data-step="plan">
+            <span class="node-kicker">activity</span>
+            <strong>Plan</strong>
+            <p>web, systems, critic</p>
+          </div>
+
+          <div class="connector split" aria-hidden="true"></div>
+
+          <div class="agent-grid">
+            <div class="agent" data-agent="web">
+              <span class="agent-icon" aria-hidden="true">W</span>
+              <strong>web</strong>
+              <p id="webState">queued</p>
+            </div>
+            <div class="agent" data-agent="systems">
+              <span class="agent-icon" aria-hidden="true">S</span>
+              <strong>systems</strong>
+              <p id="systemsState">queued</p>
+            </div>
+            <div class="agent" data-agent="critic">
+              <span class="agent-icon" aria-hidden="true">!</span>
+              <strong>critic</strong>
+              <p id="criticState">queued</p>
+            </div>
+          </div>
+
+          <div class="connector merge" aria-hidden="true"></div>
+
+          <div class="node" data-step="synthesis">
+            <span class="node-kicker">activity</span>
+            <strong>Synthesis</strong>
+            <p id="synthesisText">waiting</p>
+          </div>
+
+          <div class="connector" aria-hidden="true"></div>
+
+          <div class="node output" data-step="brief">
+            <span class="node-kicker">result</span>
+            <strong>Brief</strong>
+            <p id="briefText">not started</p>
+          </div>
+        </section>
+
+        <section class="brief-panel" aria-label="Research brief">
+          <div class="panel-heading">
+            <h2>Research Brief</h2>
+            <span id="attemptsSummary">0 attempts</span>
+          </div>
+          <ol id="eventLog" class="event-log"></ol>
+          <div class="lesson" id="lesson">
+            Temporal records Activity attempts in history and retries by policy.
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+chron 0
+@ 2026-08-29T00:00:00Z codex temprun static-demo-ui
+= Add a dependency-free demo UI that visualizes the first deep research workflow.
+
++ C claim settled demo-ui-should-teach-workflow-shape : The first demo UI should visualize the Temporal research workflow and retry path without adding backend framework dependencies.
+
++ K commitment done add-static-demo-ui : Added a static browser demo for request, planning, parallel fake agents, retry, synthesis, and final brief states.
++ K commitment active add-signal-approval : Add durable human approval via Signal and Query, then update the demo to show the approval wait state.
+
+> demo/index.html
+> demo/styles.css
+> demo/app.js
+> README.md
+> MEMORY.md
+> journal/2026-08-29.md

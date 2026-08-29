@@ -63,4 +63,10 @@ pytest
 
 The tests use Temporal's Python testing environment. On first run, the Temporal SDK may download a local test server binary.
 
+## Demo UI
+
+Open `demo/index.html` in a browser to run a lightweight visual simulation of the deep research workflow.
+
+The demo shows request intake, planning, parallel fake agent Activities, one controlled retry, synthesis, and final brief generation. It is intentionally static and dependency-free so the project keeps its early focus on Temporal concepts rather than web framework setup.
+
 See `AGENTS.md`, `MEMORY.md`, and `.memory/README.md` for the learning constraints and project memory.
