@@ -1,0 +1,13 @@
+chron 0
+@ 2026-08-29T16:25:00Z codex temprun tailscale-serve-demo
+= Expose the static demo through Tailscale Serve while keeping Temporal local.
+
++ C claim settled tailscale-serve-is-demo-access-layer : The working demo should be reachable through Tailscale Serve while Temporal server and worker remain local to the machine.
++ C claim settled local-api-bridge-is-next-runtime-boundary : The browser UI should talk to a local HTTP API bridge, and that bridge should use the Temporal Python client.
+
++ K commitment done expose-static-demo-with-tailscale-serve : Exposed the static demo on the tailnet at https://xiangs-mac-studio.tail1aa4f.ts.net/.
++ K commitment active add-local-api-bridge : Serve API routes beside the UI so remote tailnet clients can start and inspect local Temporal workflows.
++ K commitment active keep-temporal-service-local : Keep Temporal server and worker local to the machine behind the Tailscale-served UI/API.
+
+> MEMORY.md
+> journal/2026-08-29.md

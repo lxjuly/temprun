@@ -1,12 +1,12 @@
 # temprun Memory
 
-Updated: 2026-08-28
+Updated: 2026-08-29
 
 This file is the current-state projection for agents resuming temprun work. Detailed paper trail belongs in `journal/`.
 
 ## Current Focus
 
-Extend the first Temporal research workflow with durable human approval via Signal and Query.
+Add a local API bridge behind the Tailscale-served demo so the UI can start and query real Temporal workflows.
 
 ## Claims
 
@@ -18,6 +18,8 @@ Extend the first Temporal research workflow with durable human approval via Sign
 - [settled] retry-policy-works-with-fake-agent-failure: A controlled one-time fake agent Activity failure is retried by Temporal according to RetryPolicy without a manual workflow retry loop.
 - [settled] demo-ui-should-teach-workflow-shape: The first demo UI should visualize the Temporal research workflow and retry path without adding backend framework dependencies.
 - [settled] github-pages-docs-source-is-demo-target: The static demo should live in `docs/` so GitHub Pages can publish it from `main` without a build step.
+- [settled] tailscale-serve-is-demo-access-layer: The working demo should be reachable through Tailscale Serve while Temporal server and worker remain local to the machine.
+- [settled] local-api-bridge-is-next-runtime-boundary: The browser UI should talk to a local HTTP API bridge, and that bridge should use the Temporal Python client.
 
 ## Commitments
 
@@ -26,11 +28,17 @@ Extend the first Temporal research workflow with durable human approval via Sign
 - [done] add-controlled-retry-experiment: Added controlled Activity failure plus Temporal RetryPolicy and verified retry behavior with tests.
 - [done] add-static-demo-ui: Added a dependency-free static demo that simulates request, planning, parallel agents, retry, synthesis, and final brief states.
 - [done] prepare-github-pages-demo: Moved the static demo to `docs/` and documented the `main` / `docs` Pages source.
+- [done] expose-static-demo-with-tailscale-serve: Exposed the static demo on the tailnet at `https://xiangs-mac-studio.tail1aa4f.ts.net/`.
 - [active] add-signal-approval: Add durable human approval via Signal and Query after synthesis.
+- [active] add-local-api-bridge: Serve API routes beside the UI so remote tailnet clients can start and inspect local Temporal workflows.
 - [proposed] run-worker-crash-experiments: Kill and restart workers at adversarial points and document observed behavior.
 
 ## Next Actions
 
+- Replace the static Python file server with a small `temprun.local_api` HTTP server.
+- Serve `docs/` at `/` and expose health at `/api/health`.
+- Add `/api/research` to start `ResearchWorkflow` through the local Temporal Python client.
+- Keep Tailscale Serve pointing at the localhost API/UI server.
 - Add approval state to `ResearchWorkflow`.
 - Add a Signal that approves or rejects the synthesized brief.
 - Add a Query that exposes workflow status while waiting for approval.
