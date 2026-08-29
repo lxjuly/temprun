@@ -171,8 +171,16 @@ h2 {
   padding: 18px;
 }
 
+.flow.fanout-running .connector.split,
+.flow.fanout-running .connector.merge {
+  border-color: rgba(56, 93, 149, 0.72);
+  box-shadow: 0 0 0 3px rgba(56, 93, 149, 0.08);
+}
+
 .node,
 .agent {
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.94);
@@ -184,6 +192,18 @@ h2 {
     box-shadow 160ms ease;
 }
 
+.agent::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(56, 93, 149, 0.72);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
 .node.active,
 .agent.active {
   border-color: rgba(56, 93, 149, 0.75);
@@ -191,14 +211,28 @@ h2 {
   transform: translateY(-1px);
 }
 
+.agent.active::after {
+  animation: activity-progress var(--attempt-duration, 1200ms) linear forwards;
+}
+
 .node.done,
 .agent.done {
   border-color: rgba(35, 114, 70, 0.55);
 }
 
+.agent.done::after {
+  background: rgba(35, 114, 70, 0.7);
+  transform: scaleX(1);
+}
+
 .agent.retry {
   border-color: rgba(184, 85, 34, 0.8);
   box-shadow: 0 0 0 3px rgba(184, 85, 34, 0.14);
+}
+
+.agent.retry::after {
+  background: rgba(184, 85, 34, 0.82);
+  transform: scaleX(1);
 }
 
 .node-kicker {
@@ -247,9 +281,21 @@ h2 {
 }
 
 .agent-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.agent-grid.running {
+  padding: 8px;
+  border: 1px solid rgba(56, 93, 149, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent 0, rgba(56, 93, 149, 0.1) 50%, transparent 100%),
+    rgba(56, 93, 149, 0.035);
+  background-size: 220px 100%;
+  animation: parallel-scan 1200ms linear infinite;
 }
 
 .agent-icon {
@@ -343,5 +389,25 @@ h2 {
     height: 26px;
     border: 0;
     background: var(--line);
+  }
+}
+
+@keyframes activity-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes parallel-scan {
+  from {
+    background-position: -220px 0;
+  }
+
+  to {
+    background-position: 220px 0;
   }
 }

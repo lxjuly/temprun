@@ -1,0 +1,18 @@
+title: temprun visible parallel fanout
+date: 2026-08-29
+status: settled
+
+claims:
+  - id: demo-fanout-must-be-visually-obvious
+    text: During the simulated fan-out phase, the UI highlights split/merge lanes, labels the run status as 6 parallel, and animates each active agent card.
+
+changes:
+  - Added a fanout-running state to the workflow visualization.
+  - Highlighted split and merge connectors while agent Activities are running.
+  - Added per-agent progress animation during each simulated Activity attempt.
+  - Slowed simulated attempt durations enough that all six parallel agents are visible together.
+
+verification:
+  - PYTHONPATH=. .venv311/bin/python -m pytest
+  - node --check docs/app.js
+  - Playwright interaction check captured all six agents active during fan-out with no horizontal overflow.
