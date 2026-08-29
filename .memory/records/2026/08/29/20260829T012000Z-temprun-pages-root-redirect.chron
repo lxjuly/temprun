@@ -1,0 +1,13 @@
+chron 0
+@ 2026-08-29T01:20:00Z codex temprun pages-root-redirect
+= Route the GitHub Pages root URL to the static demo while keeping Temporal local.
+
++ C claim settled pages-root-should-redirect-to-docs-demo : When Pages publishes from main root, root index.html should redirect to docs/ so the public URL opens the demo.
+
++ K commitment done route-pages-root-to-demo : Added root index.html redirect and root .nojekyll marker for GitHub Pages.
++ K commitment active keep-temporal-service-local : Serve the static UI publicly while running Temporal server and workers locally for experiments.
+
+> index.html
+> .nojekyll
+> README.md
+> journal/2026-08-29.md

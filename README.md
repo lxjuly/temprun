@@ -69,6 +69,6 @@ Open `docs/index.html` in a browser to run a lightweight visual simulation of th
 
 The demo shows request intake, planning, parallel fake agent Activities, one controlled retry, synthesis, and final brief generation. It is intentionally static and dependency-free so the project keeps its early focus on Temporal concepts rather than web framework setup.
 
-For GitHub Pages, configure this repository to publish from `main` / `docs`.
+For GitHub Pages, configure this repository to publish from `main`. The root `index.html` redirects to the static demo in `docs/`.
 
 See `AGENTS.md`, `MEMORY.md`, and `.memory/README.md` for the learning constraints and project memory.
