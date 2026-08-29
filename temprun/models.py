@@ -8,6 +8,7 @@ class ResearchRequest:
     topic: str
     depth: str = "interview-prep"
     fail_agent_once: str | None = None
+    fail_agent_attempts: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -23,6 +24,7 @@ class AgentTask:
     depth: str
     agent: str
     fail_agent_once: str | None = None
+    fail_agent_attempts: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass

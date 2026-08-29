@@ -1,0 +1,21 @@
+title: temprun richer retry demo
+date: 2026-08-29
+status: settled
+
+claims:
+  - id: research-workflow-has-six-fake-agents
+    text: The current fake plan fans out to web, papers, systems, implementation, security, and critic agents.
+  - id: failure-injection-is-per-agent-attempt-count
+    text: ResearchRequest.fail_agent_attempts can make multiple agents fail for configurable attempt counts before succeeding.
+
+changes:
+  - Expanded the fake research plan from three agents to six agents.
+  - Added per-agent controlled failure counts while preserving the earlier fail_agent_once field.
+  - Raised workflow Activity RetryPolicy maximum_attempts to four so two planned failures can recover.
+  - Updated the static demo to show six agents and scenario-based multi-failure retries.
+  - Added Temporal tests for the multi-agent, multi-failure retry path.
+
+verification:
+  - PYTHONPATH=. .venv311/bin/python -m pytest
+  - node --check docs/app.js
+  - npx --yes playwright@1.57.0 screenshot --viewport-size=1280,900 http://127.0.0.1:8790/ /tmp/temprun-demo.png

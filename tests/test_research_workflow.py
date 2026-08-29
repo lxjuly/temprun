@@ -28,8 +28,15 @@ async def test_research_workflow_fans_out_and_synthesizes() -> None:
 
     assert result.topic == "Temporal replay"
     assert result.depth == "interview-prep"
-    assert result.summary == "Temporal replay researched at interview-prep depth by 3 fake agents."
-    assert {finding.split(":", 1)[0] for finding in result.findings} == {"web", "systems", "critic"}
+    assert result.summary == "Temporal replay researched at interview-prep depth by 6 fake agents."
+    assert {finding.split(":", 1)[0] for finding in result.findings} == {
+        "web",
+        "papers",
+        "systems",
+        "implementation",
+        "security",
+        "critic",
+    }
 
 
 async def test_research_workflow_retries_one_failed_agent_activity() -> None:
@@ -63,5 +70,49 @@ async def test_research_workflow_retries_one_failed_agent_activity() -> None:
     assert result.topic == "Temporal Activity retries"
     assert attempts["systems"] == 2
     assert attempts["web"] == 1
+    assert attempts["papers"] == 1
+    assert attempts["implementation"] == 1
+    assert attempts["security"] == 1
     assert attempts["critic"] == 1
     assert "manual retry loop" in result.retry_lesson
+
+
+async def test_research_workflow_retries_multiple_failed_agent_activities() -> None:
+    attempts: Counter[str] = Counter()
+
+    async def tracked_fake_agent(task):
+        attempts[task.agent] += 1
+        return await run_fake_agent(task)
+
+    tracked_fake_agent.__temporal_activity_definition = (
+        run_fake_agent.__temporal_activity_definition
+    )
+
+    async with await WorkflowEnvironment.start_time_skipping() as env:
+        async with Worker(
+            env.client,
+            task_queue="test-multi-retry",
+            workflows=[ResearchWorkflow],
+            activities=[plan_research, tracked_fake_agent, synthesize_research],
+        ):
+            result = await env.client.execute_workflow(
+                ResearchWorkflow.run,
+                ResearchRequest(
+                    topic="Temporal failure surfaces",
+                    fail_agent_attempts={
+                        "papers": 1,
+                        "systems": 2,
+                        "security": 1,
+                    },
+                ),
+                id=f"test-multi-retry-{uuid4().hex}",
+                task_queue="test-multi-retry",
+            )
+
+    assert result.topic == "Temporal failure surfaces"
+    assert attempts["papers"] == 2
+    assert attempts["systems"] == 3
+    assert attempts["security"] == 2
+    assert attempts["web"] == 1
+    assert attempts["implementation"] == 1
+    assert attempts["critic"] == 1

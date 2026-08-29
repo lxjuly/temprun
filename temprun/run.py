@@ -16,7 +16,7 @@ async def main() -> None:
         ResearchWorkflow.run,
         ResearchRequest(
             topic="Temporal workflow determinism",
-            fail_agent_once="systems",
+            fail_agent_attempts={"papers": 1, "systems": 2, "security": 1},
         ),
         id=f"research-{uuid4().hex}",
         task_queue=TASK_QUEUE,

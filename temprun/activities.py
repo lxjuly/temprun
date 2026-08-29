@@ -11,7 +11,7 @@ async def plan_research(request: ResearchRequest) -> ResearchPlan:
     return ResearchPlan(
         topic=request.topic,
         depth=request.depth,
-        agents=["web", "systems", "critic"],
+        agents=["web", "papers", "systems", "implementation", "security", "critic"],
     )
 
 
@@ -19,17 +19,34 @@ async def plan_research(request: ResearchRequest) -> ResearchPlan:
 async def run_fake_agent(task: AgentTask) -> AgentResult:
     """Fake agent Activity used to study retries before adding real LLM/network I/O."""
     info = activity.info()
-    if task.fail_agent_once == task.agent and info.attempt == 1:
-        raise RuntimeError(f"controlled one-time failure for {task.agent} agent")
+    planned_failures = task.fail_agent_attempts.get(task.agent, 0)
+    if task.fail_agent_once == task.agent:
+        planned_failures = max(planned_failures, 1)
+    if info.attempt <= planned_failures:
+        raise RuntimeError(
+            f"controlled failure {info.attempt} of {planned_failures} for {task.agent} agent"
+        )
 
     findings = {
         "web": (
             "Temporal positions Workflow history as the durable source of progress.",
             ["workflow event history", "activity completion events"],
         ),
+        "papers": (
+            "Research quality improves when claims trace back to primary sources.",
+            ["source selection criteria", "citation-backed synthesis"],
+        ),
         "systems": (
             "Activities are at-least-once, so external effects need idempotency keys.",
             ["retry attempt metadata", "idempotent side-effect boundary"],
+        ),
+        "implementation": (
+            "The workflow stays small when orchestration logic avoids provider-specific code.",
+            ["thin workflow coordinator", "activity-owned integration code"],
+        ),
+        "security": (
+            "Local services exposed through a private tailnet should still keep explicit trust boundaries.",
+            ["tailnet-only access", "localhost Temporal service"],
         ),
         "critic": (
             "Workflow code should coordinate state and avoid nondeterministic side effects.",

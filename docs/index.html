@@ -38,12 +38,13 @@
           </label>
 
           <label class="field">
-            <span>Fail Once</span>
-            <select id="failAgent" name="failAgent">
-              <option value="systems">systems</option>
+            <span>Failure Scenario</span>
+            <select id="failureScenario" name="failureScenario">
+              <option value="multiple">multiple retries</option>
               <option value="">none</option>
-              <option value="web">web</option>
-              <option value="critic">critic</option>
+              <option value="systems-once">systems once</option>
+              <option value="systems-twice">systems twice</option>
+              <option value="source-and-security">source and security</option>
             </select>
           </label>
 
@@ -65,7 +66,7 @@
           <div class="node" data-step="plan">
             <span class="node-kicker">activity</span>
             <strong>Plan</strong>
-            <p>web, systems, critic</p>
+            <p>web, papers, systems, implementation, security, critic</p>
           </div>
 
           <div class="connector split" aria-hidden="true"></div>
@@ -76,10 +77,25 @@
               <strong>web</strong>
               <p id="webState">queued</p>
             </div>
+            <div class="agent" data-agent="papers">
+              <span class="agent-icon" aria-hidden="true">P</span>
+              <strong>papers</strong>
+              <p id="papersState">queued</p>
+            </div>
             <div class="agent" data-agent="systems">
               <span class="agent-icon" aria-hidden="true">S</span>
               <strong>systems</strong>
               <p id="systemsState">queued</p>
+            </div>
+            <div class="agent" data-agent="implementation">
+              <span class="agent-icon" aria-hidden="true">I</span>
+              <strong>implementation</strong>
+              <p id="implementationState">queued</p>
+            </div>
+            <div class="agent" data-agent="security">
+              <span class="agent-icon" aria-hidden="true">K</span>
+              <strong>security</strong>
+              <p id="securityState">queued</p>
             </div>
             <div class="agent" data-agent="critic">
               <span class="agent-icon" aria-hidden="true">!</span>

@@ -25,7 +25,7 @@ class ResearchWorkflow:
         retry_policy = RetryPolicy(
             initial_interval=timedelta(seconds=1),
             maximum_interval=timedelta(seconds=5),
-            maximum_attempts=3,
+            maximum_attempts=4,
         )
 
         # Parallel Activity fan-out/fan-in is the first core Temporal concept in this repo.
@@ -38,6 +38,7 @@ class ResearchWorkflow:
                         depth=plan.depth,
                         agent=agent,
                         fail_agent_once=request.fail_agent_once,
+                        fail_agent_attempts=dict(request.fail_agent_attempts),
                     ),
                     start_to_close_timeout=timedelta(seconds=10),
                     retry_policy=retry_policy,

@@ -10,11 +10,21 @@ const stateEls = {
   synthesis: document.querySelector('[data-step="synthesis"]'),
   brief: document.querySelector('[data-step="brief"]'),
   web: document.querySelector('[data-agent="web"]'),
+  papers: document.querySelector('[data-agent="papers"]'),
   systems: document.querySelector('[data-agent="systems"]'),
+  implementation: document.querySelector('[data-agent="implementation"]'),
+  security: document.querySelector('[data-agent="security"]'),
   critic: document.querySelector('[data-agent="critic"]'),
 };
 
-const agents = ["web", "systems", "critic"];
+const agents = ["web", "papers", "systems", "implementation", "security", "critic"];
+const failureScenarios = {
+  "": {},
+  "systems-once": { systems: 1 },
+  "systems-twice": { systems: 2 },
+  "source-and-security": { papers: 1, security: 1 },
+  multiple: { papers: 1, systems: 2, security: 1 },
+};
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function resetUi(topic) {
@@ -49,27 +59,33 @@ function logEvent(title, detail) {
   eventLog.append(item);
 }
 
-async function runAgent(agent, failAgent, attempts) {
-  setStep(agent, "active");
-  document.querySelector(`#${agent}State`).textContent = "attempt 1";
-  attempts.count += 1;
+function updateAttemptCount(attempts) {
   attemptsSummary.textContent = `${attempts.count} attempts`;
-  await delay(420 + agents.indexOf(agent) * 130);
+}
 
-  if (failAgent === agent) {
-    setStep(agent, "retry");
-    document.querySelector(`#${agent}State`).textContent = "failed, retry scheduled";
-    logEvent(`${agent}`, "Activity failed once; RetryPolicy schedules attempt 2.");
-    await delay(560);
+async function runAgent(agent, failureCount, attempts) {
+  setStep(agent, "active");
+
+  for (let attempt = 1; attempt <= failureCount; attempt += 1) {
+    document.querySelector(`#${agent}State`).textContent = `attempt ${attempt}`;
     attempts.count += 1;
-    attemptsSummary.textContent = `${attempts.count} attempts`;
-    document.querySelector(`#${agent}State`).textContent = "attempt 2";
+    updateAttemptCount(attempts);
+    await delay(360 + agents.indexOf(agent) * 75);
+    setStep(agent, "retry");
+    document.querySelector(`#${agent}State`).textContent = `failed, retry ${attempt + 1} scheduled`;
+    logEvent(`${agent}`, `Activity attempt ${attempt} failed; RetryPolicy schedules attempt ${attempt + 1}.`);
     await delay(420);
+    setStep(agent, "active");
   }
 
+  const finalAttempt = failureCount + 1;
+  document.querySelector(`#${agent}State`).textContent = `attempt ${finalAttempt}`;
+  attempts.count += 1;
+  updateAttemptCount(attempts);
+  await delay(420 + agents.indexOf(agent) * 80);
   setStep(agent, "done");
-  document.querySelector(`#${agent}State`).textContent = "completed";
-  return `${agent}: finding captured`;
+  document.querySelector(`#${agent}State`).textContent = `completed on attempt ${finalAttempt}`;
+  return `${agent}: finding captured after ${finalAttempt} attempt${finalAttempt === 1 ? "" : "s"}`;
 }
 
 async function runWorkflow(event) {
@@ -78,7 +94,8 @@ async function runWorkflow(event) {
   const formData = new FormData(form);
   const topic = formData.get("topic").toString().trim() || "Temporal workflow determinism";
   const depth = formData.get("depth").toString();
-  const failAgent = formData.get("failAgent").toString();
+  const scenarioName = formData.get("failureScenario").toString();
+  const failures = failureScenarios[scenarioName] || {};
   const attempts = { count: 0 };
 
   resetUi(topic);
@@ -93,8 +110,15 @@ async function runWorkflow(event) {
   await delay(520);
   setStep("plan", "done");
 
-  logEvent("Workflow", "fan-out scheduled three Activities in parallel.");
-  const results = await Promise.all(agents.map((agent) => runAgent(agent, failAgent, attempts)));
+  const failingAgents = Object.entries(failures)
+    .filter(([, count]) => count > 0)
+    .map(([agent, count]) => `${agent} x${count}`)
+    .join(", ");
+  logEvent("Workflow", "fan-out scheduled six Activities in parallel.");
+  logEvent("Failure plan", failingAgents || "no controlled Activity failures.");
+  const results = await Promise.all(
+    agents.map((agent) => runAgent(agent, failures[agent] || 0, attempts))
+  );
 
   setStep("synthesis", "active");
   document.querySelector("#synthesisText").textContent = `${results.length} results ready`;
