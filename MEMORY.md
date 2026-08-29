@@ -17,6 +17,7 @@ Extend the first Temporal research workflow with durable human approval via Sign
 - [settled] workflow-activity-boundary-is-central: Workflow code coordinates durable state and must remain replay-safe; external or nondeterministic work belongs in Activities.
 - [settled] retry-policy-works-with-fake-agent-failure: A controlled one-time fake agent Activity failure is retried by Temporal according to RetryPolicy without a manual workflow retry loop.
 - [settled] demo-ui-should-teach-workflow-shape: The first demo UI should visualize the Temporal research workflow and retry path without adding backend framework dependencies.
+- [settled] github-pages-docs-source-is-demo-target: The static demo should live in `docs/` so GitHub Pages can publish it from `main` without a build step.
 
 ## Commitments
 
@@ -24,6 +25,7 @@ Extend the first Temporal research workflow with durable human approval via Sign
 - [done] implement-parallel-agent-fanout: Runs three fake agent Activities in parallel and synthesizes their results.
 - [done] add-controlled-retry-experiment: Added controlled Activity failure plus Temporal RetryPolicy and verified retry behavior with tests.
 - [done] add-static-demo-ui: Added a dependency-free static demo that simulates request, planning, parallel agents, retry, synthesis, and final brief states.
+- [done] prepare-github-pages-demo: Moved the static demo to `docs/` and documented the `main` / `docs` Pages source.
 - [active] add-signal-approval: Add durable human approval via Signal and Query after synthesis.
 - [proposed] run-worker-crash-experiments: Kill and restart workers at adversarial points and document observed behavior.
 

@@ -7,9 +7,9 @@ chron 0
 + K commitment done add-static-demo-ui : Added a static browser demo for request, planning, parallel fake agents, retry, synthesis, and final brief states.
 + K commitment active add-signal-approval : Add durable human approval via Signal and Query, then update the demo to show the approval wait state.
 
-> demo/index.html
-> demo/styles.css
-> demo/app.js
+> docs/index.html
+> docs/styles.css
+> docs/app.js
 > README.md
 > MEMORY.md
 > journal/2026-08-29.md

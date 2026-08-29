@@ -1,0 +1,16 @@
+chron 0
+@ 2026-08-29T01:00:00Z codex temprun github-pages-docs
+= Prepare the static demo for GitHub Pages deployment from the docs directory.
+
++ C claim settled github-pages-docs-source-is-demo-target : The static demo should live in docs/ so GitHub Pages can publish it from main without a build step.
+
++ K commitment done prepare-github-pages-demo : Moved the static demo to docs/ and documented the main/docs Pages source.
++ K commitment active add-signal-approval : Add durable human approval via Signal and Query, then update the deployed demo to show the approval wait state.
+
+> docs/index.html
+> docs/styles.css
+> docs/app.js
+> docs/.nojekyll
+> README.md
+> MEMORY.md
+> journal/2026-08-29.md
